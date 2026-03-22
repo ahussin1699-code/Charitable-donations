@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>من نحن</title>
+    <link rel="stylesheet" href="../css/من نحن.css">
+    <style>
+    header { position: relative; }
+    .menu-btn { background: #2f6d3f; color: white; border: none; padding: 8px 12px; font-size: 1rem; border-radius: 5px; cursor: pointer; position:absolute; left:10px; top:50%; transform:translateY(-50%); margin-left:0; }
+    @media (max-width: 768px) { .main-nav { display: none; flex-direction: column; gap:10px; } .main-nav.active { display: flex; } }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- الهيدر -->
+    <header>
+        <div class="header-container" style="display:flex;justify-content:space-between;align-items:center;width:100%;">
+            <div class="logo" style="font-size:clamp(18px,4vw,26px);font-weight:bold;color:#fff;">تبرعات خيرية</div>
+            <nav class="main-nav" style="display:flex;align-items:center;gap:clamp(10px,2vw,25px);">
+                <a href="الصفحه الرئسيه.html" class="nav-item">
+                    <i class="fa-solid fa-house" style="font-size:1.3rem;color:#fff;"></i>
+                    <span style="font-size:clamp(0.7rem,1.5vw,0.85rem);font-weight:600;color:#fff;">الرئيسية</span>
+                </a>
+                <a href="اتصال بنا.html" class="nav-item">
+                    <i class="fa-solid fa-envelope" style="font-size:1.3rem;color:#fff;"></i>
+                    <span style="font-size:clamp(0.7rem,1.5vw,0.85rem);font-weight:600;color:#fff;">تواصل معنا</span>
+                </a>
+                <a href="من نحن.html" class="nav-item active">
+                    <i class="fa-solid fa-circle-info" style="font-size:1.3rem;color:#f4d03f;"></i>
+                    <span style="font-size:clamp(0.7rem,1.5vw,0.85rem);font-weight:600;color:#fff;">من نحن</span>
+                </a>
+                <a href="تسجيل الدخول .html" class="nav-item" id="authBtn">
+                    <i class="fa-solid fa-right-to-bracket" style="font-size:1.3rem;color:#fff;"></i>
+                    <span style="font-size:clamp(0.7rem,1.5vw,0.85rem);font-weight:600;color:#fff;">تسجيل الدخول</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <h2>من نحن</h2>
+
+    <div class="desc-text">
+        منصة تبرعات خيرية تهدف إلى ربط المتبرعين بالمستفيدين بطريقة آمنة وسهلة.<br>
+        هدفنا هو مساعدة المحتاجين في جميع أنحاء الوطن العربي من خلال تبرعات موثوقة ومباشرة.
+    </div>
+
+    <!-- المميزات -->
+    <div class="features">
+
+        <div class="feature-box" onclick="featureClick('الشفافية: نعرض المعلومات بوضوح وصدق لجميع المتبرعين.')">
+            <div class="feature-title">الشفافية</div>
+            <p>نوفر معلومات واضحة وصحيحة.</p>
+        </div>
+
+        <div class="feature-box" onclick="featureClick('السهولة: تصميم بسيط يساعدك على التبرع بسهولة.')">
+            <div class="feature-title">السهولة</div>
+            <p>منصة مصممة بخطوات بسيطة.</p>
+        </div>
+
+        <div class="feature-box" onclick="featureClick('الأمان: نحافظ على سرية بياناتك ونؤمّن العملية بالكامل.')">
+            <div class="feature-title">الأمان</div>
+            <p>نلتزم بحماية بياناتك أثناء التبرع.</p>
+        </div>
+
+    </div>
+
+    <!-- رؤيتنا -->
+    <div class="vision-box">
+        <div class="vision-title">رؤيتنا</div>
+        نسعى لأن نكون المنصة الأولى في الوطن العربي التي تربط بين المتبرعين والمستفيدين بموثوقية وأمان.
+    </div>
+
+    <!-- رسالتنا -->
+    <div class="mission-box">
+        <div class="mission-title">رسالتنا</div>
+        تمكين المتبرعين من تقديم المساعدة بطرق مبتكرة وآمنة باستخدام التكنولوجيا الحديثة التي تسهّل عملية التبرع.
+    </div>
+
+   
+    <!-- 🎯 JavaScript -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../Js/config.js"></script>
+    <script src="../Js/من نحن.js"></script>
+
+</body>
+
+</html>

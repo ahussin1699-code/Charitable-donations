@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>إضافة حالة - تبرعات خيرية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../css/اضافه حاله العميل .css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+    header { position: relative; }
+    .menu-btn { background: #2f6d3f; color: white; border: none; padding: 8px 12px; font-size: 1rem; border-radius: 5px; cursor: pointer; position:absolute; left:10px; top:50%; transform:translateY(-50%); margin-left:0; }
+    @media (max-width: 768px) { .main-nav { display: none; flex-direction: column; gap:10px; } .main-nav.active { display: flex; } }
+
+</style>
+</head>
+
+<body>
+
+    <header> 
+         <div class="header-container"> 
+             <div class="logo-section"> 
+                 <div class="logo-text">تبرعات خيرية</div> 
+             </div> 
+             
+             <nav class="main-nav"> 
+                 <a href="الصفحه الرئسيه.html" class="nav-item"> 
+                     <i class="fa-solid fa-house"></i> 
+                     <span>الرئيسية</span> 
+                 </a> 
+                 <a href="اتصال بنا.html" class="nav-item"> 
+                     <i class="fa-solid fa-envelope"></i> 
+                     <span>تواصل معنا</span> 
+                 </a> 
+                 <a href="من نحن.html" class="nav-item"> 
+                     <i class="fa-solid fa-circle-info"></i> 
+                     <span>من نحن</span> 
+                 </a> 
+                 <a href="الصفحه الشخصية.html" class="nav-item"> 
+                     <img id="navProfileImg" src="../images/default-avatar.png" alt="Profile" class="nav-profile-img"> 
+                     <span>الملف الشخصي</span> 
+                 </a> 
+                 <a href="صفحه العرض.html" class="nav-item" id="logoutBtn"> 
+                     <i class="fa-solid fa-right-from-bracket"></i> 
+                     <span>خروج</span> 
+                 </a> 
+             </nav> 
+         </div> 
+     </header>
+
+<div class="container">
+
+    <!-- نموذج إضافة الحالة -->
+    <div class="card">
+        <h2>تقديم طلب كمستفيد</h2>
+
+        <div class="form-container">
+            <input type="text" id="name" placeholder="الاسم بالكامل">
+            <input type="email" id="email" placeholder="البريد الإلكتروني">
+            <input type="text" id="phone" placeholder="رقم الهاتف">
+             <input type="text" id="phone" placeholder="العنوان">
+            
+            <select id="caseType">
+                <option value="">اختر نوع الحالة</option>
+                <option value="علاج">علاج</option>
+                <option value="عملية جراحية">عملية جراحية</option>
+                <option value="أجهزة طبية">أجهزة طبية</option>
+            </select>
+
+            <textarea id="description" rows="4" placeholder="وصف الحالة المرضية"></textarea>
+        </div>
+
+        <button class="btn-primary" onclick="submitCase()">إرسال الطلب</button>
+
+        <p id="result" style="margin-top:10px;color:green;"></p>
+    </div>
+
+
+    <!-- قسم التواصل مع المشرف -->
+    <div class="card">
+        <h2>التواصل مع المشرف</h2>
+
+        <div class="chat-box" id="chatBox"></div>
+
+        <input type="text" id="chatInput" placeholder="اكتب رسالتك هنا...">
+        <button class="btn-primary" onclick="sendMessage()">إرسال</button>
+    </div>
+
+</div>
+
+<script src="../Js/اضافه حاله العميل .js"></script>
+<script>
+// menu toggle for header
+const menuBtnC = document.getElementById('menuBtn');
+const mainNavC = document.querySelector('nav.main-nav');
+if (menuBtnC && mainNavC) {
+    menuBtnC.addEventListener('click', () => {
+        mainNavC.classList.toggle('active');
+    });
+}
+</script>
+
+</body>
+</html>
