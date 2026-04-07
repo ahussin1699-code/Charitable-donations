@@ -1,0 +1,113 @@
+ body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            margin: 0;
+        }
+
+        /* ===== الشريط الأخضر الأعلى ===== */
+        .header-bar {
+            background-color: #1D7D36;
+            /* أخضر */
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ===== نموذج التسجيل ===== */
+        .form-container {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            width: 450px;
+            text-align: center;
+            margin: 30px auto;
+            /* يبعد عن الشريط الأعلى */
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="tel"],
+        input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+
+        /* ===== بوكس اختيار نوع الحساب والجنس ===== */
+        .user-type-boxes,
+        .gender-boxes {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+        }
+
+        .user-type-box,
+        .gender-box {
+            flex: 1;
+            padding: 20px;
+            margin: 0 5px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .user-type-box:hover,
+        .gender-box:hover {
+            border-color: #1D7D36;
+            background-color: #ecf6ff;
+        }
+
+        .user-type-box.selected,
+        .gender-box.selected {
+            border-color: #1D7D36;
+            background-color: #1D7D36;
+            color: white;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 6px;
+            background-color: #1D7D36;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1D7D36;
+        }
+
+        /* رابط تسجيل الدخول */
+        .login-link {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .login-link a {
+            color: #1D7D36;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }

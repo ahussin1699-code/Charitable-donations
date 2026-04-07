@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
@@ -12,6 +12,13 @@
     <style></style>
   </head>
   <body>
+    <!-- زر القائمة للموبايل -->
+    <button class="menu-toggle" id="menuToggle" aria-label="فتح القائمة">
+      <i class="fas fa-bars"></i>
+    </button>
+    <!-- طبقة التعتيم -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <!-- الشريط الجانبي -->
     <div class="sidebar" id="sidebar">
       <div class="sidebar-header">
@@ -127,5 +134,22 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../Js/config.js"></script>
     <script src="../Js/مراجعه الحالات.js"></script>
-  </body>
+    <script>
+      const menuToggle = document.getElementById('menuToggle');
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      function closeSidebar() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+      }
+      menuToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
+      });
+      overlay.addEventListener('click', closeSidebar);
+    </script>
+  
+    <link rel="stylesheet" href="../css/chatbot.css">
+    <script src="../Js/chatbot.js"></script>
+</body>
 </html>

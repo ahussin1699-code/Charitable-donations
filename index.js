@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     setTimeout(() => {
-        window.location.href = "html/showcase.html";
+        window.location.href = "html/صفحه العرض.html";
     }, 3000);
 });
 

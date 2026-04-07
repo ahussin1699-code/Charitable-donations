@@ -80,6 +80,21 @@ header .logo {
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
 }
 
+.donor-info-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    border: 1px solid #eee;
+}
+
+.section-subtitle {
+    color: #2f6d3f;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
 .page-title {
     text-align: center;
     color: #0b5e32;

@@ -1,8 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تبرعات خيرية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -34,11 +35,14 @@
 <body>
 
     <header>
-        <div class="header-container" style="display:flex;justify-content:space-between;align-items:flex-start;width:100%;">
-            <div class="logo" style="font-size:clamp(15px,4vw,26px);font-weight:bold;color:#fff;margin-top:-4px;display:flex;flex-direction:row;align-items:center;gap:10px;">
+        <div class="header-container" style="display:flex;justify-content:space-between;align-items:center;width:100%;">
+            <div class="logo" style="font-size:clamp(15px,4vw,26px);font-weight:bold;color:#fff;display:flex;flex-direction:row;align-items:center;gap:10px;">
                 <span>تبرعات خيرية</span>
                 <span id="userEmail" style="font-size:clamp(14px,2.5vw,18px);font-weight:500;color:#ffeb99;white-space:nowrap;"></span>
             </div>
+            <button class="menu-btn" id="menuBtn" aria-label="القائمة" style="display:none;">
+                <i class="fa-solid fa-bars"></i>
+            </button>
             <nav class="main-nav" style="display:flex;align-items:center;gap:clamp(10px,2vw,25px);">
                 <a href="الصفحه الرئسيه.html" class="nav-item active">
                     <i class="fa-solid fa-house" style="font-size:1.3rem;color:#f4d03f;margin-top:-12px;"></i>
@@ -112,9 +116,9 @@
                 </div>
                 <div class="footer-section">
                     <h3>روابط سريعة</h3>
-                    <p><a href="#home" style="color: #aaa; text-decoration: none;">الرئيسية</a></p>
+                    <p><a href="الصفحه الرئسيه.html" style="color: #aaa; text-decoration: none;">الرئيسية</a></p>
                     <p><a href="#features" style="color: #aaa; text-decoration: none;">المميزات</a></p>
-                    <p><a href="#about" style="color: #aaa; text-decoration: none;">من نحن</a></p>
+                    <p><a href="من نحن.html" style="color: #aaa; text-decoration: none;">من نحن</a></p>
                 </div>
                 <div class="footer-section">
                     <h3>اتصل بنا</h3>
@@ -136,6 +140,34 @@
 
     <script src="../Js/config.js"></script>
     <script src="../Js/الصفحه الرئسيه.js"></script>
+    <script>
+        const menuBtn = document.getElementById("menuBtn");
+        const mainNav = document.querySelector(".main-nav");
+        if (menuBtn && mainNav) {
+            menuBtn.addEventListener("click", () => {
+                mainNav.classList.toggle("active");
+                menuBtn.querySelector("i").className = mainNav.classList.contains("active")
+                    ? "fa-solid fa-xmark"
+                    : "fa-solid fa-bars";
+            });
+            // إغلاق القائمة عند الضغط على أي رابط
+            mainNav.querySelectorAll(".nav-item").forEach(a => {
+                a.addEventListener("click", () => {
+                    mainNav.classList.remove("active");
+                    menuBtn.querySelector("i").className = "fa-solid fa-bars";
+                });
+            });
+            // إغلاق عند الضغط خارج الهيدر
+            document.addEventListener("click", (e) => {
+                if (!e.target.closest("header")) {
+                    mainNav.classList.remove("active");
+                    menuBtn.querySelector("i").className = "fa-solid fa-bars";
+                }
+            });
+        }
+    </script>
+    <link rel="stylesheet" href="../css/chatbot.css">
+    <script src="../Js/chatbot.js"></script>
 
 </body>
 

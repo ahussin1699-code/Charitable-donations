@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8" />
@@ -62,17 +62,16 @@
         جاري تحميل وصف الحالة...
       </p>
 
-      <div class="contact-box" id="adminContactBox" style="display:none;">
-        <span class="box-label">معلومات التواصل والمساعدة (للمسؤولين فقط)</span>
+      <div class="contact-box">
+        <span class="box-label">معلومات التواصل والمساعدة</span>
         <div class="info-row"><span>العنوان:</span><span id="caseAddress">-</span></div>
-        <div class="info-row"><span>رقم الهاتف:</span><span id="casePhone">-</span></div>
-        <div class="info-row"><span>البريد الإلكتروني:</span><span id="caseEmail">-</span></div>
+        <div class="info-row admin-only" style="display:none;"><span>رقم الهاتف:</span><span id="casePhone">-</span></div>
+        <div class="info-row admin-only" style="display:none;"><span>البريد الإلكتروني:</span><span id="caseEmail">-</span></div>
       </div>
     </div>
 
     <div class="bottom-btn">
-      <button class="donate-btn" id="donateNowBtn" style="display:none;">تبرع الآن</button>
-      <button class="donate-btn" id="contactBtn" style="display:none;">تواصل للمساعدة</button>
+      <button class="donate-btn" id="donateBtn">تبرع الآن</button>
       <button class="donate-btn delete-btn" id="deleteCaseBtn" style="display:none;">حذف الحالة</button>
     </div>
 
@@ -80,6 +79,8 @@
 
 <script src="../Js/config.js"></script>
 <script src="../Js/تفاصيل الحاله.js"></script>
+<link rel="stylesheet" href="../css/chatbot.css">
+<script src="../Js/chatbot.js"></script>
 
 </body>
 </html>
