@@ -7,6 +7,11 @@ document.addEventListener('DOMContentLoaded', function() {
     if (menuToggle && sidebar) {
         menuToggle.addEventListener('click', function() {
             sidebar.classList.toggle('active');
+            const icon = menuToggle.querySelector('i');
+            if (icon) {
+                icon.className = sidebar.classList.contains('active')
+                    ? 'fas fa-xmark' : 'fas fa-bars';
+            }
         });
 
         document.addEventListener('click', function(event) {
@@ -16,6 +21,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 sidebar.classList.contains('active')
             ) {
                 sidebar.classList.remove('active');
+                const icon = menuToggle.querySelector('i');
+                if (icon) icon.className = 'fas fa-bars';
             }
         });
     }

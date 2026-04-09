@@ -230,43 +230,93 @@ header {
 }
 
 /* ================== استجابة الشاشات ================== */
+
+/* ---- hamburger ---- */
+.menu-btn {
+    display: none;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    border: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.2s;
+}
+.menu-btn:hover { background: rgba(255,255,255,0.25); }
+
 @media (max-width: 768px) {
     header {
-        width: 95%;
+        width: 100%;
         padding: 10px 15px;
-        border-radius: 25px;
-        min-height: 50px;
+        border-radius: 0;
+        min-height: auto;
+        top: 0;
     }
 
-    .logo {
-        font-size: 1.1rem;
+    .header-container {
+        flex-wrap: wrap;
     }
 
-    .nav-item span {
-        display: none;
-        /* إخفاء النص على الموبايل لتوفير المساحة */
-    }
+    .logo { font-size: 1.1rem; }
+
+    .menu-btn { display: flex; }
 
     .main-nav {
-        gap: 15px;
-        /* مسافة مناسبة بين الأيقونات */
+        display: none;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px;
+        width: 100%;
+        padding: 10px 0 8px;
+        border-top: 1px solid rgba(255,255,255,0.15);
+        margin-top: 8px;
     }
 
-    .nav-item i {
-        font-size: 1.2rem;
+    .main-nav.active { display: flex; }
+
+    .nav-item {
+        flex-direction: row;
+        gap: 6px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 20px;
+        padding: 6px 12px;
     }
 
+    .nav-item span { display: inline; font-size: 0.78rem; }
+    .nav-item i { font-size: 0.95rem; }
+
+    /* الـ contact يتحول لعمود */
     .contact-container {
-        gap: 40px;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
+
+    .form-box {
+        width: 100%;
+        max-width: 100%;
+        padding: 20px 15px;
     }
 
     .contact-info {
         align-items: center;
         text-align: center;
+        width: 100%;
     }
 
     .info-item {
-        flex-direction: column;
+        flex-direction: row;
         gap: 10px;
+        justify-content: center;
+    }
+
+    .social-icons {
+        margin-top: 20px;
     }
 }

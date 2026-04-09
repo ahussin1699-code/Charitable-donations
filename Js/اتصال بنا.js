@@ -3,6 +3,23 @@ const mainNavA = document.querySelector('nav.main-nav');
 if (menuBtnA && mainNavA) {
     menuBtnA.addEventListener('click', () => {
         mainNavA.classList.toggle('active');
+        const icon = menuBtnA.querySelector('i');
+        if (icon) icon.className = mainNavA.classList.contains('active')
+            ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+    });
+    mainNavA.querySelectorAll('.nav-item').forEach(a => {
+        a.addEventListener('click', () => {
+            mainNavA.classList.remove('active');
+            const icon = menuBtnA.querySelector('i');
+            if (icon) icon.className = 'fa-solid fa-bars';
+        });
+    });
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('header') && mainNavA.classList.contains('active')) {
+            mainNavA.classList.remove('active');
+            const icon = menuBtnA.querySelector('i');
+            if (icon) icon.className = 'fa-solid fa-bars';
+        }
     });
 }
 

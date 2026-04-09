@@ -19,6 +19,23 @@ const mainNavD = document.querySelector('nav.main-nav');
 if (menuBtnD && mainNavD) {
     menuBtnD.addEventListener('click', () => {
         mainNavD.classList.toggle('active');
+        const icon = menuBtnD.querySelector('i');
+        if (icon) icon.className = mainNavD.classList.contains('active')
+            ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+    });
+    mainNavD.querySelectorAll('.nav-item').forEach(a => {
+        a.addEventListener('click', () => {
+            mainNavD.classList.remove('active');
+            const icon = menuBtnD.querySelector('i');
+            if (icon) icon.className = 'fa-solid fa-bars';
+        });
+    });
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('header') && mainNavD.classList.contains('active')) {
+            mainNavD.classList.remove('active');
+            const icon = menuBtnD.querySelector('i');
+            if (icon) icon.className = 'fa-solid fa-bars';
+        }
     });
 }
 

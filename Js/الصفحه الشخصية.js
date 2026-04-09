@@ -18,6 +18,23 @@ const mainNav2 = document.querySelector("nav.main-nav");
 if (menuBtn2 && mainNav2) {
   menuBtn2.addEventListener("click", () => {
     mainNav2.classList.toggle("active");
+    const icon = menuBtn2.querySelector("i");
+    if (icon) icon.className = mainNav2.classList.contains("active")
+        ? "fa-solid fa-xmark" : "fa-solid fa-bars";
+  });
+  mainNav2.querySelectorAll(".nav-item").forEach(a => {
+    a.addEventListener("click", () => {
+      mainNav2.classList.remove("active");
+      const icon = menuBtn2.querySelector("i");
+      if (icon) icon.className = "fa-solid fa-bars";
+    });
+  });
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest("header") && mainNav2.classList.contains("active")) {
+      mainNav2.classList.remove("active");
+      const icon = menuBtn2.querySelector("i");
+      if (icon) icon.className = "fa-solid fa-bars";
+    }
   });
 }
 

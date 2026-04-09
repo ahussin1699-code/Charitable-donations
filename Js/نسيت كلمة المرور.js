@@ -18,14 +18,19 @@ async function sendReset() {
   }
 
   let finalEmail = emailValue;
+  let isPhone = false;
 
   if (!emailValue.includes('@')) {
-    const phoneRegex = /^[\d+]+$/;
-    if (phoneRegex.test(emailValue)) {
-      finalEmail = emailValue + "@charity.com";
+    // تحقق إن الإدخال رقم هاتف
+    const phoneRegex = /^(\+20|0)?1[0125]\d{8}$/;
+    const cleaned = emailValue.replace(/\s/g, '');
+    if (phoneRegex.test(cleaned)) {
+      isPhone = true;
+      // تحويل للصيغة الدولية
+      finalEmail = cleaned.startsWith('+') ? cleaned : '+2' + (cleaned.startsWith('0') ? cleaned : '0' + cleaned);
     } else {
       if (errorMsg) {
-        errorMsg.textContent = "يرجى إدخال بريد إلكتروني صحيح أو رقم هاتف صحيح";
+        errorMsg.textContent = "يرجى إدخال بريد إلكتروني صحيح أو رقم هاتف مصري صحيح";
         errorMsg.style.display = 'block';
       }
       return;
@@ -38,18 +43,38 @@ async function sendReset() {
   }
 
   try {
-    const { error } = await sb.auth.resetPasswordForEmail(finalEmail, {
-      redirectTo: window.location.origin + '/html/تحديث كلمة المرور.html',
-    });
+    let error;
+
+    if (isPhone) {
+      // SMS — بدون shouldCreateUser عشان يسمح بالإرسال حتى لو الرقم مش مسجل
+      ({ error } = await sb.auth.signInWithOtp({
+        phone: finalEmail
+      }));
+      sessionStorage.setItem("otp_phone", finalEmail);
+      sessionStorage.setItem("otp_type", "sms");
+    } else {
+      ({ error } = await sb.auth.signInWithOtp({
+        email: finalEmail,
+        options: { shouldCreateUser: false, emailRedirectTo: null }
+      }));
+      sessionStorage.setItem("otp_email", finalEmail);
+      localStorage.setItem("reset_email", finalEmail);
+      sessionStorage.setItem("otp_type", "email");
+    }
 
     if (error) throw error;
 
     if (successMsg) {
-      successMsg.textContent = "إذا كان الحساب موجوداً، فقد تم إرسال رابط إعادة تعيين كلمة المرور. يرجى التحقق من بريدك الإلكتروني.";
+      successMsg.textContent = isPhone
+        ? "تم إرسال رمز التحقق إلى هاتفك عبر SMS."
+        : "تم إرسال رمز التحقق إلى بريدك الإلكتروني.";
       successMsg.style.display = 'block';
     }
     const emailInput = document.getElementById('email');
     if (emailInput) emailInput.value = '';
+    setTimeout(() => {
+      window.location.href = "ادخال رمز التحقق.html";
+    }, 1500);
   } catch (error) {
     console.error("Error resetting password:", error);
     if (errorMsg) {

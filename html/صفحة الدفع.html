@@ -20,7 +20,12 @@
     <header>
       <div class="header-container">
         <div class="logo">تبرعات خيرية</div>
-        <nav class="main-nav">
+
+        <button class="menu-btn" id="menuBtn" aria-label="القائمة">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <nav class="main-nav" id="mainNav">
           <a href="الصفحه الرئسيه.html" class="nav-item">
             <i class="fa-solid fa-house"></i>
             <span>الرئيسية</span>
@@ -172,6 +177,29 @@
     <script src="../Js/صفحة الدفع.js"></script>
     <script>
       const sb = createSupabaseClient();
+
+      // ---- hamburger menu ----
+      const menuBtn = document.getElementById("menuBtn");
+      const mainNav = document.getElementById("mainNav");
+      if (menuBtn && mainNav) {
+        menuBtn.addEventListener("click", () => {
+          mainNav.classList.toggle("active");
+          menuBtn.querySelector("i").className = mainNav.classList.contains("active")
+            ? "fa-solid fa-xmark" : "fa-solid fa-bars";
+        });
+        mainNav.querySelectorAll(".nav-item").forEach(a => {
+          a.addEventListener("click", () => {
+            mainNav.classList.remove("active");
+            menuBtn.querySelector("i").className = "fa-solid fa-bars";
+          });
+        });
+        document.addEventListener("click", (e) => {
+          if (!e.target.closest("header") && mainNav.classList.contains("active")) {
+            mainNav.classList.remove("active");
+            menuBtn.querySelector("i").className = "fa-solid fa-bars";
+          }
+        });
+      }
 
       async function checkUserAndImage() {
         if (!sb) return;

@@ -174,6 +174,25 @@ const mainNavH = document.querySelector('nav.main-nav');
 if (menuBtnH && mainNavH) {
     menuBtnH.addEventListener('click', () => {
         mainNavH.classList.toggle('active');
+        const icon = menuBtnH.querySelector('i');
+        if (icon) {
+            icon.className = mainNavH.classList.contains('active')
+                ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+        }
+    });
+    mainNavH.querySelectorAll('.nav-item').forEach(a => {
+        a.addEventListener('click', () => {
+            mainNavH.classList.remove('active');
+            const icon = menuBtnH.querySelector('i');
+            if (icon) icon.className = 'fa-solid fa-bars';
+        });
+    });
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('header') && mainNavH.classList.contains('active')) {
+            mainNavH.classList.remove('active');
+            const icon = menuBtnH.querySelector('i');
+            if (icon) icon.className = 'fa-solid fa-bars';
+        }
     });
 }
 
