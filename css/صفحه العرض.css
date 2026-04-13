@@ -161,6 +161,37 @@ input[type="reset"]:hover {
     color: #000;
 }
 
+/* ===== Recent Cases Grid ===== */
+.cases-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 55px;
+    margin-top: 30px;
+}
+
+.cases-grid .case-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+}
+
+.cases-grid .case-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.cases-grid .case-card .case-content {
+    padding: 14px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
 /* ===== Sections Layout ===== */
 .section-container {
     max-width: 1000px;
@@ -366,15 +397,15 @@ footer {
     }
 
     .logo-text {
-        font-size: 1.1rem; /* تصغير حجم اللوجو لتوفير مساحة */
+        font-size: 1.1rem;
     }
 
     nav {
-        gap: 15px; /* مسافة ثابتة بين الأيقونات في الموبايل */
+        gap: 15px;
     }
 
     .hero {
-        min-height: 400px; /* ضمان ارتفاع كافي للموبايل لظهور المحتوى والأزرار */
+        min-height: 400px;
     }
 
     .info-row, .info-row.reverse {
@@ -396,6 +427,15 @@ footer {
         width: 90%;
         max-width: 400px;
         padding: 8px 10px;
+    }
+
+    .cases-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .cases-grid .case-card img {
+        height: 200px;
     }
 }
 

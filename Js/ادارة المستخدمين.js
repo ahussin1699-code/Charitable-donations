@@ -1,4 +1,7 @@
 let sb = null;
+let currentUserEmail = null;
+
+const OWNER_EMAIL = 'ahussin9125@gmail.com';
 
 async function init() {
     if (typeof createSupabaseClient === 'function') {
@@ -8,6 +11,11 @@ async function init() {
         console.error("Supabase client is not initialized");
         return;
     }
+
+    // جلب إيميل المستخدم الحالي
+    const { data: { user } } = await sb.auth.getUser();
+    currentUserEmail = user?.email || null;
+
     await loadAdminHeaderInfo();
     await fetchUsers();
 }
@@ -82,7 +90,23 @@ function renderUsers(users) {
         return;
     }
 
-    tbody.innerHTML = users.map(user => `
+    tbody.innerHTML = users.map(user => {
+        const isAdmin = user.user_type === 'مسؤول' || user.user_type === 'admin';
+        const isDoctor = user.user_type === 'طبيب';
+
+        const isOwner = currentUserEmail === OWNER_EMAIL;
+
+        const adminBtn = isAdmin
+            ? (isOwner
+                ? `<button class="type-remove-admin-opt" onclick="removeRole(this, 'admin')"><i class="fas fa-user-minus"></i> إلغاء المسؤول</button>`
+                : '')
+            : `<button class="type-admin-opt" onclick="updateUserType(this, 'مسؤول')"><i class="fas fa-user-shield"></i> تعيين مسؤول</button>`;
+
+        const doctorBtn = isDoctor
+            ? `<button class="type-remove-doctor-opt" onclick="removeRole(this, 'doctor')"><i class="fas fa-user-minus"></i> إلغاء الطبيب</button>`
+            : `<button class="type-doctor-opt" onclick="updateUserType(this, 'طبيب')"><i class="fas fa-user-doctor"></i> تعيين طبيب</button>`;
+
+        return `
         <tr data-id="${user.id}">
             <td>${user.name || 'بدون اسم'}</td>
             <td><span class="user-type ${getUserTypeClass(user.user_type)}">${user.user_type || 'غير محدد'}</span></td>
@@ -99,13 +123,13 @@ function renderUsers(users) {
                         <button class="status-active-opt" onclick="updateStatus(this, 'نشط')"><i class="fas fa-check-circle"></i> تنشيط</button>
                         <button class="status-banned-opt" onclick="updateStatus(this, 'محظور')"><i class="fas fa-ban"></i> حظر</button>
                         <button class="status-pending-opt" onclick="updateStatus(this, 'انتظار')"><i class="fas fa-clock"></i> انتظار</button>
-                        <button class="type-doctor-opt" onclick="updateUserType(this, 'طبيب')"><i class="fas fa-user-doctor"></i> تعيين طبيب</button>
-                        <button class="type-admin-opt" onclick="updateUserType(this, 'مسؤول')"><i class="fas fa-user-shield"></i> تعيين مسؤول</button>
+                        ${doctorBtn}
+                        ${adminBtn}
                     </div>
                 </div>
             </td>
         </tr>
-    `).join('');
+    `}).join('');
 }
 
 function getUserTypeClass(type) {
@@ -119,6 +143,73 @@ function getUserTypeClass(type) {
     }
 }
 
+async function removeRole(btn, role) {
+    const row = btn.closest('tr');
+    const userId = row.getAttribute('data-id');
+    const emailCell = row.children[2];
+    const email = emailCell ? (emailCell.textContent || '').trim() : '';
+    if (!sb || !userId) return;
+
+    // التحقق إن المستخدم الحالي هو المالك فقط
+    if (role === 'admin' && currentUserEmail !== OWNER_EMAIL) {
+        alert('فقط المالك يمكنه إلغاء صلاحية المسؤول');
+        return;
+    }
+
+    try {
+        // جلب original_type لو موجود، وإلا نرجع متبرع
+        let originalType = 'متبرع';
+        try {
+            const { data: userData } = await sb
+                .from('users')
+                .select('original_type')
+                .eq('id', userId)
+                .maybeSingle();
+            if (userData?.original_type) originalType = userData.original_type;
+        } catch (_) {}
+
+        // تحديث user_type فقط (بدون original_type لو العمود مش موجود)
+        let updatePayload = { user_type: originalType };
+        const { error: updateError } = await sb
+            .from('users')
+            .update(updatePayload)
+            .eq('id', userId);
+
+        if (updateError) {
+            console.error('Update error:', updateError);
+            throw updateError;
+        }
+
+        // حذف من الجدول المناسب - مش blocking لو فشل
+        if (role === 'admin') {
+            const { error: delErr } = await sb.from('supervisors').delete().eq('email', email);
+            if (delErr) console.warn('supervisors delete warning:', delErr.message);
+        } else if (role === 'doctor') {
+            const { error: delErr } = await sb.from('doctors').delete().eq('email', email);
+            if (delErr) console.warn('doctors delete warning:', delErr.message);
+        }
+
+        // تحديث الواجهة
+        const typeSpan = row.querySelector('.user-type');
+        if (typeSpan) {
+            typeSpan.textContent = originalType;
+            typeSpan.className = `user-type ${getUserTypeClass(originalType)}`;
+        }
+
+        const dropdown = btn.closest('.dropdown-content');
+        if (role === 'admin') {
+            btn.outerHTML = `<button class="type-admin-opt" onclick="updateUserType(this, 'مسؤول')"><i class="fas fa-user-shield"></i> تعيين مسؤول</button>`;
+        } else if (role === 'doctor') {
+            btn.outerHTML = `<button class="type-doctor-opt" onclick="updateUserType(this, 'طبيب')"><i class="fas fa-user-doctor"></i> تعيين طبيب</button>`;
+        }
+        if (dropdown) dropdown.style.display = 'none';
+
+    } catch (error) {
+        console.error('Error removing role:', error);
+        alert('فشل إلغاء الصلاحية: ' + (error.message || 'خطأ غير معروف'));
+    }
+}
+
 async function updateUserType(btn, newType) {
     const row = btn.closest('tr');
     const userId = row.getAttribute('data-id');
@@ -127,26 +218,49 @@ async function updateUserType(btn, newType) {
     const email = emailCell ? (emailCell.textContent || '').trim() : '';
     const name = nameCell ? (nameCell.textContent || '').trim() : '';
     if (!sb || !userId) return;
+
+    // نحفظ reference للـ dropdown قبل ما نغير btn
+    const dropdown = btn.closest('.dropdown-content');
+
     try {
+        // update user_type فقط بدون original_type عشان ميسببش مشكلة لو العمود مش موجود
         const { error } = await sb
             .from('users')
             .update({ user_type: newType })
             .eq('id', userId);
         if (error) throw error;
+
+        // upsert في الجدول المناسب
         if (newType === 'طبيب') {
-            await sb.from('doctors').upsert({ email, user_id: userId, name }, { onConflict: 'email' });
+            const { error: e } = await sb.from('doctors').upsert({ email, user_id: userId, name }, { onConflict: 'email' });
+            if (e) console.warn('doctors upsert warning:', e.message);
         } else if (newType === 'مسؤول' || newType === 'admin') {
-            await sb.from('supervisors').upsert({ email, user_id: userId, name }, { onConflict: 'email' });
+            const { error: e } = await sb.from('supervisors').upsert({ email, user_id: userId, name }, { onConflict: 'email' });
+            if (e) console.warn('supervisors upsert warning:', e.message);
         }
+
+        // تحديث الـ badge
         const typeSpan = row.querySelector('.user-type');
         if (typeSpan) {
             typeSpan.textContent = newType;
             typeSpan.className = `user-type ${getUserTypeClass(newType)}`;
         }
-        btn.closest('.dropdown-content').style.display = 'none';
+
+        // تحديث الزر - نغير btn.outerHTML آخر حاجة بعد ما خلصنا من كل references
+        if (newType === 'مسؤول' || newType === 'admin') {
+            const removeBtn = currentUserEmail === OWNER_EMAIL
+                ? `<button class="type-remove-admin-opt" onclick="removeRole(this, 'admin')"><i class="fas fa-user-minus"></i> إلغاء المسؤول</button>`
+                : '';
+            btn.outerHTML = removeBtn;
+        } else if (newType === 'طبيب') {
+            btn.outerHTML = `<button class="type-remove-doctor-opt" onclick="removeRole(this, 'doctor')"><i class="fas fa-user-minus"></i> إلغاء الطبيب</button>`;
+        }
+
+        if (dropdown) dropdown.style.display = 'none';
+
     } catch (error) {
         console.error("Error updating user type:", error);
-        alert("فشل تغيير نوع المستخدم");
+        alert("فشل تغيير نوع المستخدم: " + (error.message || 'خطأ غير معروف'));
     }
 }
 

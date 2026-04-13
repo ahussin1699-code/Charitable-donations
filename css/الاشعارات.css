@@ -327,7 +327,7 @@ footer {
     margin-top: 10px;
 }
 
-/* ===== Side Drawer ===== */
+/* ===== Side Drawer - sidebar on desktop, drawer on mobile ===== */
 .side-drawer {
     position: fixed;
     top: 0;
@@ -338,12 +338,9 @@ footer {
     z-index: 1200;
     display: flex;
     flex-direction: column;
-    transform: translateX(100%);
-    transition: transform 0.3s cubic-bezier(.4,0,.2,1);
     box-shadow: -5px 0 25px rgba(0,0,0,0.2);
+    transition: transform 0.3s cubic-bezier(.4,0,.2,1);
 }
-
-.side-drawer.active { transform: translateX(0); }
 
 .side-drawer-header {
     display: flex;
@@ -402,11 +399,45 @@ footer {
     display: none;
 }
 
-.side-drawer-overlay.active { display: block; }
+/* ===== Desktop: sidebar ثابت ===== */
+@media (min-width: 992px) {
+    .side-drawer {
+        transform: translateX(0) !important;
+        z-index: 100;
+    }
 
-/* ===== Responsive ===== */
-@media (max-width: 768px) {
-    .menu-toggle { display: flex; }
+    .side-drawer-close { display: none; }
+
+    .menu-toggle { display: none !important; }
+
+    .side-drawer-overlay { display: none !important; }
+
+    .main-content {
+        margin-right: 260px;
+        max-width: calc(100% - 260px);
+        padding: 20px 30px;
+    }
+
+    header {
+        position: sticky;
+        top: 0;
+        z-index: 200;
+    }
+}
+
+/* ===== Mobile: drawer يتفتح بالزرار ===== */
+@media (max-width: 991px) {
+    .side-drawer {
+        transform: translateX(100%);
+    }
+
+    .side-drawer.active {
+        transform: translateX(0);
+    }
+
+    .side-drawer-overlay.active { display: block; }
+
+    .menu-toggle { display: flex !important; }
 
     .admin-profile-box span {
         max-width: 80px;

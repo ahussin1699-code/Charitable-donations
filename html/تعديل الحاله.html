@@ -87,6 +87,23 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../Js/config.js"></script>
     <script src="../Js/تعديل الحاله.js"></script>
+    <script>
+      (async function loadNavProfile() {
+        try {
+          const sb = createSupabaseClient();
+          if (!sb) return;
+          const { data: { user } } = await sb.auth.getUser();
+          if (!user) return;
+          const { data } = await sb.from('users').select('profile_image').eq('email', user.email).maybeSingle();
+          const img = document.getElementById('navProfileImg');
+          if (img && data?.profile_image) img.src = data.profile_image;
+          else if (img) {
+            const local = localStorage.getItem('profileImage_' + user.id);
+            if (local) img.src = local;
+          }
+        } catch (_) {}
+      })();
+    </script>
 
     <link rel="stylesheet" href="../css/chatbot.css">
     <script src="../Js/chatbot.js"></script>

@@ -81,6 +81,14 @@
     }
 
     // ---- قاعدة الردود الديناميكية ----
+    function normalizeAr(t) {
+        return t.toLowerCase()
+            .replace(/[أإآا]/g, "ا")
+            .replace(/[ةه]/g, "ه")
+            .replace(/ى/g, "ي")
+            .replace(/[ؤئ]/g, "ء");
+    }
+
     function getResponses() {
         const li = !!currentUser; // loggedIn
         return [
@@ -227,22 +235,79 @@
                 quick: ["كيف اتبرع", "تصفح الحالات", "تواصل معنا"]
             },
             {
-                keywords: ["مرحبا", "هلا", "السلام", "اهلا", "أهلاً", "هاي", "hi", "hello", "صباح", "مساء"],
+                keywords: ["مرحبا", "هلا", "السلام", "اهلا", "أهلاً", "هاي", "hi", "hello", "صباح", "مساء", "هلو"],
                 reply: welcomeMsg(),
                 actions: authActions(),
                 quick: welcomeQuick()
+            },
+            {
+                keywords: ["وداع", "باي", "مع السلامة", "الى اللقاء", "bye"],
+                reply: "مع السلامة 👋\nنتمنى أن نكون قد ساعدناك. لا تتردد في العودة في أي وقت!",
+                actions: [],
+                quick: ["كيف اتبرع", "تصفح الحالات"]
+            },
+            {
+                keywords: ["هل يمكنني التبرع بمبلغ صغير", "اقل مبلغ", "حد ادنى", "اقل تبرع"],
+                reply: "بالطبع! 💚 لا يوجد حد أدنى للتبرع.\nكل مبلغ مهما كان صغيراً يصنع فرقاً حقيقياً.",
+                actions: donateActions(),
+                quick: ["كيف اتبرع", "طرق الدفع"]
+            },
+            {
+                keywords: ["هل يصل تبرعي", "وصول التبرع", "ضمان وصول", "هل التبرع يوصل"],
+                reply: "نعم ✅ نضمن وصول تبرعك مباشرة للمستفيد.\nنتابع كل حالة ونرسل تقارير دورية للمتبرعين.",
+                actions: [actionBtn("اعرف أكثر عنا", "fa-circle-info", PAGES.about)],
+                quick: ["هل التبرع آمن؟", "تصفح الحالات"]
+            },
+            {
+                keywords: ["استرداد", "رجوع المبلغ", "استرجاع", "ارجاع"],
+                reply: "في حالة وجود مشكلة في الدفع يمكنك التواصل معنا مباشرة 📬\nسنراجع طلبك خلال 24 ساعة.",
+                actions: [actionBtn("تواصل معنا", "fa-envelope", PAGES.contact)],
+                quick: ["تواصل معنا", "طرق الدفع"]
+            },
+            {
+                keywords: ["حذف حساب", "مسح حساب", "ازالة حساب"],
+                reply: "لحذف حسابك يمكنك التواصل مع فريق الدعم 📬\nسيتم معالجة طلبك خلال 48 ساعة.",
+                actions: [actionBtn("تواصل معنا", "fa-envelope", PAGES.contact)],
+                quick: ["تواصل معنا", "ملفي الشخصي"]
+            },
+            {
+                keywords: ["شكوى", "مشكلة", "خطأ", "بلاغ", "مشكله"],
+                reply: "نأسف لسماع ذلك 😔\nيرجى التواصل معنا مباشرة وسنحل مشكلتك في أقرب وقت.",
+                actions: [actionBtn("تواصل معنا", "fa-envelope", PAGES.contact)],
+                quick: ["تواصل معنا", "الأسئلة الشائعة"]
+            },
+            {
+                keywords: ["تطوع", "متطوع", "اشارك", "مشاركة", "اساعد"],
+                reply: "يسعدنا انضمامك كمتطوع 🌟\nتواصل معنا لمعرفة فرص التطوع المتاحة.",
+                actions: [actionBtn("تواصل معنا", "fa-envelope", PAGES.contact)],
+                quick: ["من أنتم", "كيف اتبرع"]
+            },
+            {
+                keywords: ["ساعدني", "محتاج مساعدة", "مش فاهم", "لا افهم", "ايه ده", "ماذا تفعل"],
+                reply: "بكل سرور! 😊 إليك أبرز ما يمكنني مساعدتك فيه:",
+                actions: authActions(),
+                quick: ["كيف اتبرع", "تصفح الحالات", "تواصل معنا", "الأسئلة الشائعة"]
+            },
+            {
+                keywords: ["شكرا", "شكراً", "ممتاز", "رائع", "جميل", "مشكور", "تسلم", "عظيم", "احسنت"],
+                reply: "شكراً لك على كلماتك الطيبة 🌟\nهل تحتاج مساعدة في شيء آخر؟",
+                actions: [],
+                quick: ["كيف اتبرع", "تصفح الحالات", "تواصل معنا"]
             }
         ];
     }
 
     function getResponse(text) {
-        const lower = text.toLowerCase().trim();
+        const lower = normalizeAr(text.trim());
         for (const r of getResponses()) {
-            if (r.keywords.some(k => lower.includes(k))) return r;
+            if (r.keywords.some(k => lower.includes(normalizeAr(k)))) return r;
         }
         return {
-            reply: "لم أفهم سؤالك تماماً 😅\nجرب أحد الخيارات أدناه أو تواصل مع فريقنا.",
-            actions: [actionBtn("تواصل معنا", "fa-envelope", PAGES.contact)],
+            reply: "لم أفهم سؤالك تماماً 😅\nجرب أحد الخيارات أدناه أو تواصل مع فريقنا مباشرة.",
+            actions: [
+                actionBtn("تواصل معنا", "fa-envelope", PAGES.contact),
+                actionBtn("الأسئلة الشائعة", "fa-circle-question", PAGES.faq),
+            ],
             quick: currentUser
                 ? ["كيف اتبرع", "تصفح الحالات", "ملفي الشخصي"]
                 : ["كيف اتبرع", "تسجيل الدخول", "إنشاء حساب"]

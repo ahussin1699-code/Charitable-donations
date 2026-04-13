@@ -451,7 +451,7 @@ footer {
 }
 
 .footer-about {
-    flex: 1 1 380px;
+    flex: 1 1 220px;
 }
 
 .footer-about h4 {
@@ -467,7 +467,7 @@ footer {
 }
 
 .footer-quick {
-    flex: 1 1 380px;
+    flex: 1 1 200px;
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
@@ -481,7 +481,9 @@ footer {
     border-radius: 9999px;
     text-decoration: none;
     font-weight: 700;
+    font-size: 0.85rem;
     box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    white-space: nowrap;
 }
 
 .footer-quick a:hover {
@@ -548,24 +550,25 @@ footer {
 
     .nav-item {
         flex-direction: row;
-        gap: 6px;
+        gap: 5px;
         background: rgba(255,255,255,0.1);
         border-radius: 20px;
-        padding: 6px 12px;
+        padding: 5px 10px;
+        flex: 0 0 auto;
     }
 
     .nav-item span {
         display: inline;
-        font-size: 0.78rem;
+        font-size: 0.75rem;
     }
 
     .nav-item i {
-        font-size: 0.95rem;
+        font-size: 0.85rem;
     }
 
     .nav-profile-img {
-        width: 20px;
-        height: 20px;
+        width: 18px;
+        height: 18px;
     }
 
     .toolbar {
@@ -594,10 +597,21 @@ footer {
 
     .footer-content {
         flex-direction: column;
+        align-items: center;
         text-align: center;
+        gap: 16px;
     }
 
     .footer-social, .footer-quick {
         justify-content: center;
+    }
+
+    .footer-about {
+        text-align: center;
+    }
+
+    .footer-quick a {
+        font-size: 0.8rem;
+        padding: 6px 12px;
     }
 }

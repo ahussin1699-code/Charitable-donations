@@ -309,11 +309,19 @@
         th {
             text-align: right;
             padding: 15px 20px;
-            color: var(--text-light);
+            color: #fff;
             font-weight: 700;
             font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
+            background: #2f6d3f;
+        }
+
+        thead tr th:first-child {
+            border-radius: 0 12px 12px 0;
+        }
+
+        thead tr th:last-child {
+            border-radius: 12px 0 0 12px;
         }
 
         td {
@@ -481,3 +489,46 @@
                 gap: 10px;
             }
         }
+
+/* ===== Table Status Badges ===== */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 14px;
+    border-radius: 50px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.status-pending  { background: #fef7e0; color: #d48800; }
+.status-approved { background: #e6f4ea; color: #1e7e34; }
+.status-completed{ background: #e8f0fe; color: #1967d2; }
+
+/* ===== Action View Button ===== */
+.action-view-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #2f6d3f, #3a8a50);
+    color: #fff;
+    text-decoration: none;
+    padding: 7px 16px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    font-family: 'Cairo', sans-serif;
+    transition: all 0.25s ease;
+    box-shadow: 0 3px 10px rgba(47,109,63,0.25);
+}
+
+.action-view-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 16px rgba(47,109,63,0.35);
+    background: linear-gradient(135deg, #3a8a50, #2f6d3f);
+}
+
+.action-view-btn i {
+    font-size: 0.8rem;
+}

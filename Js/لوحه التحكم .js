@@ -123,15 +123,19 @@ async function loadRecentActivity() {
             return;
         }
 
-        tbody.innerHTML = cases.map(c => `
+        tbody.innerHTML = cases.map(c => {
+            const statusClass = c.status === 'مكتمل' ? 'status-completed'
+                : c.status === 'مقبول' ? 'status-approved'
+                : 'status-pending';
+            return `
             <tr>
                 <td>${c.name}</td>
                 <td>${c.type || 'إنسانية'}</td>
                 <td>${new Date(c.created_at).toLocaleDateString('ar-EG')}</td>
-                <td><span class="status-badge ${c.status === 'مكتمل' ? 'status-completed' : 'status-pending'}">${c.status || 'قيد المراجعة'}</span></td>
-                <td><a href="تفاصيل الحاله.html?id=${c.id}" class="view-btn">عرض</a></td>
+                <td><span class="status-badge ${statusClass}">${c.status || 'قيد المراجعة'}</span></td>
+                <td><a href="تفاصيل الحاله.html?id=${c.id}" class="action-view-btn"><i class="fas fa-eye"></i> عرض</a></td>
             </tr>
-        `).join('');
+        `}).join('');
 
     } catch (error) {
         console.error('Error loading recent activity:', error);

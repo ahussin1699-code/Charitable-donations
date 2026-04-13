@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
         status: document.getElementById('caseStatus')?.value
       };
 
-      const submitBtn = document.getElementById('submitBtn');
+      const submitBtn = document.querySelector('.submit-btn');
       if (submitBtn) {
         submitBtn.disabled = true;
         submitBtn.textContent = 'جاري الحفظ...';
@@ -80,16 +80,58 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (error) throw error;
 
-        alert('تم حفظ التعديلات بنجاح');
+        alert('تم حفظ التعديلات بنجاح ✅');
         window.location.href = 'تفاصيل الحاله.html?id=' + encodeURIComponent(id);
       } catch (err) {
         console.error('خطأ أثناء حفظ التعديلات:', err);
-        alert('حدث خطأ أثناء حفظ التعديلات، حاول مرة أخرى');
+        alert('حدث خطأ أثناء حفظ التعديلات: ' + (err.message || 'حاول مرة أخرى'));
       } finally {
         if (submitBtn) {
           submitBtn.disabled = false;
           submitBtn.textContent = 'حفظ التعديلات';
         }
+      }
+    });
+  }
+
+  // زر الحذف
+  const deleteBtn = document.getElementById('deleteCaseBtn');
+  if (deleteBtn) {
+    deleteBtn.addEventListener('click', async function() {
+      const id = getQueryParam('id');
+      if (!id) return;
+
+      if (!confirm('هل أنت متأكد من حذف هذه الحالة؟ لا يمكن التراجع عن هذا الإجراء.')) return;
+
+      deleteBtn.disabled = true;
+      deleteBtn.textContent = 'جاري الحذف...';
+
+      try {
+        const { data, error } = await sb
+          .from('cases')
+          .delete()
+          .eq('id', id)
+          .select();
+
+        console.log('Delete result:', { data, error });
+
+        if (error) throw error;
+
+        // لو data فاضية يعني RLS منعت الحذف
+        if (!data || data.length === 0) {
+          alert('لم يتم الحذف - تأكد من صلاحيات الحذف في Supabase RLS');
+          deleteBtn.disabled = false;
+          deleteBtn.textContent = 'حذف الحالة';
+          return;
+        }
+
+        alert('تم حذف الحالة بنجاح 🗑️');
+        window.location.href = 'مراجعه الحالات.html';
+      } catch (err) {
+        console.error('خطأ أثناء حذف الحالة:', err);
+        alert('حدث خطأ أثناء الحذف: ' + (err.message || 'حاول مرة أخرى'));
+        deleteBtn.disabled = false;
+        deleteBtn.textContent = 'حذف الحالة';
       }
     });
   }

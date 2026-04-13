@@ -511,8 +511,19 @@
             cursor: pointer;
         }
 
-        .dropdown-content a:hover {
+        .dropdown-content a:hover,
+        .dropdown-content button:hover {
             background-color: #f1f1f1;
+        }
+
+        .type-remove-admin-opt,
+        .type-remove-doctor-opt {
+            color: #dc3545 !important;
+        }
+
+        .type-remove-admin-opt:hover,
+        .type-remove-doctor-opt:hover {
+            background-color: #fff0f0 !important;
         }
 
         .edit-dropdown:hover .dropdown-content {

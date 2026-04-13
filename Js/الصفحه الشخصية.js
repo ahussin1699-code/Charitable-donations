@@ -123,10 +123,15 @@ async function checkAuthAndFetchData() {
     userData?.profile_image ||
     (!isViewingOther ? localStorage.getItem(`profileImage_${user.id}`) : null);
 
-  if (savedImage) {
-    updateAllImages(savedImage);
+  if (isViewingOther) {
+    // صورة الشخص المعروض تروح للـ form بس
+    updateAllImages(savedImage || "../images/default-avatar.png", false);
+
+    // صورة الأدمن نفسه تفضل في الـ nav
+    const adminImage = selfRow?.profile_image || localStorage.getItem(`profileImage_${user.id}`);
+    if (navProfileImg) navProfileImg.src = adminImage || "../images/default-avatar.png";
   } else {
-    updateAllImages("../images/default-avatar.png");
+    updateAllImages(savedImage || "../images/default-avatar.png", true);
   }
 
   if (isViewingOther) {
@@ -158,10 +163,10 @@ function showLoading(show) {
   if (loadingOverlay) loadingOverlay.style.display = show ? "flex" : "none";
 }
 
-function updateAllImages(src) {
+function updateAllImages(src, updateNav = true) {
   if (profileImg) profileImg.src = src;
-  if (navProfileImg) navProfileImg.src = src;
   if (formProfileImg) formProfileImg.src = src;
+  if (navProfileImg && updateNav) navProfileImg.src = src;
 }
 
 uploadInput.addEventListener("change", function () {
